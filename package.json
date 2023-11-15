@@ -5,8 +5,8 @@
   "scripts": {
     "lint": "tsc && eslint . --ext .ts,.tsx",
     "fmt": "dprint fmt",
-    "start": "tsc -p tsconfig.json",
-    "start2": "node dist/index.js"
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js"
   },
   "dependencies": {
     

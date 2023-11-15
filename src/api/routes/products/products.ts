@@ -6,7 +6,7 @@ import { Product, ProductId } from '../../../models/Product.js'
 
 const postProducts = pipe(
   Http.post('postProducts', '/products', {
-    response: Sc.number,
+    response: ProductId,
     request: { body: Product }
   }, { description: 'Create a new product' })
 )
@@ -26,23 +26,23 @@ const getOneProduct = pipe(
 
 const patchOneProduct = pipe(
   Http.patch('patchOneProduct', '/products', {
-    response: Sc.number,
+    response: ProductId,
     request: { body: Product }
   })
 )
 
 const removeOneProduct = pipe(
   Http.delete('removeOneProduct', '/products', {
-    response: Sc.number,
+    response: ProductId,
     request: { params: Sc.struct({ id: ProductId }) }
   })
 )
 
 export const productRoutes = pipe(
   Http.apiGroup('Products'),
-  postProducts,
-  getProducts,
-  getOneProduct,
-  patchOneProduct,
-  removeOneProduct
+  postProducts
+  // getProducts,
+  // getOneProduct,
+  // patchOneProduct,
+  // removeOneProduct
 )

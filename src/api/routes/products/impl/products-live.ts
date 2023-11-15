@@ -1,34 +1,42 @@
-import * as Sc from '@effect/schema/Schema'
 import { Effect as T, pipe } from 'effect'
 import * as Http from 'effect-http'
 
-import { ProductId } from '../../../../models/Product.js'
+import { ProductService } from '../../../../services/products/products-service.js'
 import { productRoutes } from '../products.js'
 
-const getProductsHandler = () => T.succeed([{ id: Sc.parseSync(ProductId)(1) }])
+export const ProductRoutes = T.gen(function* (_) {
+  const productService = yield* _(ProductService)
 
-const postProductsHandler = () => T.succeed(Sc.parseSync(ProductId)(1))
+  type ProductsRoutes = typeof ProductsRoutes
 
-const getOneProductHandler = () => T.succeed({ id: Sc.parseSync(ProductId)(1) })
+  // const getProductsHandler = productService.getProducts
 
-const patchOneProductHandler = () => T.succeed(Sc.parseSync(ProductId)(1))
+  const postProductsHandler = ({ body }: Http.Input<ProductsRoutes, 'postProducts'>) =>
+    productService.postProducts(body)
 
-const removeOneProductHandler = () => T.succeed(Sc.parseSync(ProductId)(1))
+  // const getOneProductHandler = ({ params }: Http.Input<ProductsRoutes, 'getOneProduct'>) =>
+  //   productService.getOneProduct(params.id)
 
-type ProductsRoutes = typeof ProductsRoutes
+  // const patchOneProductHandler = ({ body }: Http.Input<ProductsRoutes, 'patchOneProduct'>) =>
+  //   productService.patchOneProduct(body)
 
-export const ProductsRoutes = pipe(
-  Http.api({ title: 'Products Routes' }),
-  Http.addGroup(productRoutes)
-)
+  // const removeOneProductHandler = ({ params }: Http.Input<ProductsRoutes, 'removeOneProduct'>) =>
+  //   productService.removeOneProduct(params.id)
 
-export const ProductsServer = pipe(
-  ProductsRoutes,
-  Http.server,
-  Http.handle('getProducts', getProductsHandler),
-  Http.handle('postProducts', postProductsHandler),
-  Http.handle('getOneProduct', getOneProductHandler),
-  Http.handle('patchOneProduct', patchOneProductHandler),
-  Http.handle('removeOneProduct', removeOneProductHandler),
-  Http.exhaustive
-)
+  const ProductsRoutes = pipe(
+    Http.api({ title: 'Products Routes' }),
+    Http.addGroup(productRoutes)
+  )
+
+  return pipe(
+    ProductsRoutes,
+    Http.server,
+    // Http.handle('getProducts', getProductsHandler),
+    Http.handle('postProducts', postProductsHandler),
+    // Http.handle('getOneProduct', getOneProductHandler),
+    // Http.handle('patchOneProduct', patchOneProductHandler),
+    // Http.handle('removeOneProduct', removeOneProductHandler),
+    // Check if all routes are implemented
+    Http.exhaustive
+  )
+})

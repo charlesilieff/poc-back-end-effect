@@ -1,16 +1,18 @@
 import { Effect as T, pipe } from 'effect'
 import * as Http from 'effect-http'
 
-import { ProductsServer } from './api/routes/products/impl/products-live.js'
+import { ProductRoutes } from './api/routes/products/impl/products-live.js'
+import { makeProductSqlLive } from './repository/products/sql-impl/sql-product-service-live.js'
+import { makeProductServiceLive } from './services/products/impl/product-service-live.js'
 
-// pipe(a,b,c) is equivalent to c(b(a))
 const PORT = 3000
 
-pipe(
-  ProductsServer,
-  // Check if all routes are implemented
+// pipe(a,b,c) is equivalent to c(b(a))
 
-  Http.listen({ port: PORT }),
+pipe(
+  ProductRoutes,
+  T.provide(makeProductServiceLive),
+  T.provide(makeProductSqlLive),
+  T.flatMap(s => Http.listen({ port: PORT })(s)),
   T.runPromise
-  // Http.exhaustive
 )
