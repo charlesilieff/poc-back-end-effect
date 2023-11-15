@@ -1,7 +1,11 @@
 import * as Sc from '@effect/schema/Schema'
+import type * as B from 'effect/Brand'
+
+export type ProductId = number & B.Brand<'ProductId'>
+export const ProductId = Sc.number.pipe(Sc.brand('ProductId'))
 
 export const Product = Sc.struct({
-  id: Sc.number
+  id: ProductId
   // code: Sc.string,
   // name: Sc.string,
   // description: Sc.string,
