@@ -9,19 +9,19 @@ export const ProductRoutes = T.gen(function* (_) {
 
   type ProductsRoutes = typeof ProductsRoutes
 
-  // const getProductsHandler = productService.getProducts
+  const getProductsHandler = productService.getProducts
 
   const postProductsHandler = ({ body }: Http.Input<ProductsRoutes, 'postProducts'>) =>
     productService.postProducts(body)
 
-  // const getOneProductHandler = ({ params }: Http.Input<ProductsRoutes, 'getOneProduct'>) =>
-  //   productService.getOneProduct(params.id)
+  const getOneProductHandler = ({ params }: Http.Input<ProductsRoutes, 'getOneProduct'>) =>
+    productService.getOneProduct(params.id)
 
-  // const patchOneProductHandler = ({ body }: Http.Input<ProductsRoutes, 'patchOneProduct'>) =>
-  //   productService.patchOneProduct(body)
+  const patchOneProductHandler = ({ body }: Http.Input<ProductsRoutes, 'patchOneProduct'>) =>
+    productService.patchOneProduct(body)
 
-  // const removeOneProductHandler = ({ params }: Http.Input<ProductsRoutes, 'removeOneProduct'>) =>
-  //   productService.removeOneProduct(params.id)
+  const removeOneProductHandler = ({ params }: Http.Input<ProductsRoutes, 'removeOneProduct'>) =>
+    productService.removeOneProduct(params.id)
 
   const ProductsRoutes = pipe(
     Http.api({ title: 'Products Routes' }),
@@ -31,11 +31,11 @@ export const ProductRoutes = T.gen(function* (_) {
   return pipe(
     ProductsRoutes,
     Http.server,
-    // Http.handle('getProducts', getProductsHandler),
+    Http.handle('getProducts', getProductsHandler),
     Http.handle('postProducts', postProductsHandler),
-    // Http.handle('getOneProduct', getOneProductHandler),
-    // Http.handle('patchOneProduct', patchOneProductHandler),
-    // Http.handle('removeOneProduct', removeOneProductHandler),
+    Http.handle('getOneProduct', getOneProductHandler),
+    Http.handle('patchOneProduct', patchOneProductHandler),
+    Http.handle('removeOneProduct', removeOneProductHandler),
     // Check if all routes are implemented
     Http.exhaustive
   )

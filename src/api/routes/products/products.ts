@@ -17,8 +17,10 @@ const getProducts = pipe(
   }, { description: 'Returns all products' })
 )
 
+// IMPORTANT: '/products/:id' is checked at runtime to be a valid path, '/products/:pram' will not run
+
 const getOneProduct = pipe(
-  Http.get('getOneProduct', '/products', {
+  Http.get('getOneProduct', '/products/:id', {
     response: Product,
     request: { params: Sc.struct({ id: ProductId }) }
   })
@@ -32,7 +34,7 @@ const patchOneProduct = pipe(
 )
 
 const removeOneProduct = pipe(
-  Http.delete('removeOneProduct', '/products', {
+  Http.delete('removeOneProduct', '/products/:id', {
     response: ProductId,
     request: { params: Sc.struct({ id: ProductId }) }
   })
@@ -40,9 +42,9 @@ const removeOneProduct = pipe(
 
 export const productRoutes = pipe(
   Http.apiGroup('Products'),
-  postProducts
-  // getProducts,
-  // getOneProduct,
-  // patchOneProduct,
-  // removeOneProduct
+  postProducts,
+  getProducts,
+  getOneProduct,
+  patchOneProduct,
+  removeOneProduct
 )
