@@ -1,0 +1,16 @@
+#!/bin/bash
+. "$(dirname "$0")/_/husky.sh"
+
+set -e
+
+if [ -n "$(git status -s)" ]; then
+  git status -s
+  echo "^ You forgot to commit / ignore some files"
+  exit 1;
+fi
+
+# echo "Npm i" && npm i 
+# echo "Check Dedupe.." && npm dedupe
+
+echo "linting.." && bun run lint
+echo "PrePush Done!"

@@ -1,0 +1,12 @@
+#!/bin/bash
+. "$(dirname "$0")/_/husky.sh"
+
+set -e
+
+files=$(git diff --cached --name-only --diff-filter=ACM "*.ts" "*.tsx" | tr '\n' ' ')
+
+echo "Formatting.." && bun run fmt
+
+echo "$files" | xargs git add
+
+echo "PreCommit Done!"
