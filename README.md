@@ -9,7 +9,7 @@ pnpm install
 To build:
 
 ```bash
-pnpm run build
+pnpm build
 ```
 
 To start:
