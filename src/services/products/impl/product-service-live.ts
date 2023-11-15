@@ -1,17 +1,35 @@
 import { Effect as T, Layer as L } from 'effect'
 
+import { ProductRepositoryService } from '../../../repository/products/products.js'
 import { ProductService } from '../products-service.js'
 
 export const makeProductServiceLive = L.effect(
   ProductService,
   T.gen(function* (_) {
-    yield* _(T.unit)
+    const {
+      getOneProductRepo,
+      getProductsRepo,
+      patchOneProductRepo,
+      postProductsRepo,
+      removeOneProductRepo
+    } = yield* _(ProductRepositoryService)
+
+    const getOneProduct: ProductService['getOneProduct'] = getOneProductRepo
+
+    const getProducts: ProductService['getProducts'] = getProductsRepo
+
+    const patchOneProduct: ProductService['patchOneProduct'] = patchOneProductRepo
+
+    const postProducts: ProductService['postProducts'] = postProductsRepo
+
+    const removeOneProduct: ProductService['removeOneProduct'] = removeOneProductRepo
+
     return ProductService.of({
-      getOneProduct: id => T.die(`Not implemented: getOneProduct(${id})`),
-      getProducts: () => T.die(`Not implemented: getProducts`),
-      patchOneProduct: product => T.die(`Not implemented: patchOneProduct(${product})`),
-      postProducts: product => T.die(`Not implemented: postProducts(${product})`),
-      removeOneProduct: id => T.die(`Not implemented: removeOneProduct(${id})`)
+      getOneProduct,
+      getProducts,
+      patchOneProduct,
+      postProducts,
+      removeOneProduct
     })
   })
 )
