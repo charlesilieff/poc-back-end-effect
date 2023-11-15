@@ -7,13 +7,13 @@ import { productRoutes } from '../products.js'
 
 const getProductsHandler = () => T.succeed([{ id: Sc.parseSync(ProductId)(1) }])
 
-const postProductsHandler = () => T.succeed(1)
+const postProductsHandler = () => T.succeed(Sc.parseSync(ProductId)(1))
 
 const getOneProductHandler = () => T.succeed({ id: Sc.parseSync(ProductId)(1) })
 
-const patchOneProductHandler = () => T.succeed(1)
+const patchOneProductHandler = () => T.succeed(Sc.parseSync(ProductId)(1))
 
-const removeOneProductHandler = () => T.succeed(1)
+const removeOneProductHandler = () => T.succeed(Sc.parseSync(ProductId)(1))
 
 type ProductsRoutes = typeof ProductsRoutes
 

@@ -2,7 +2,7 @@ import * as Sc from '@effect/schema/Schema'
 import { pipe } from 'effect'
 import * as Http from 'effect-http'
 
-import { Product } from '../../../models/Product.js'
+import { Product, ProductId } from '../../../models/Product.js'
 
 const postProducts = pipe(
   Http.post('postProducts', '/products', {
@@ -20,7 +20,7 @@ const getProducts = pipe(
 const getOneProduct = pipe(
   Http.get('getOneProduct', '/products', {
     response: Product,
-    request: { params: Sc.struct({ id: Sc.number }) }
+    request: { params: Sc.struct({ id: ProductId }) }
   })
 )
 
@@ -34,7 +34,7 @@ const patchOneProduct = pipe(
 const removeOneProduct = pipe(
   Http.delete('removeOneProduct', '/products', {
     response: Sc.number,
-    request: { params: Sc.struct({ id: Sc.number }) }
+    request: { params: Sc.struct({ id: ProductId }) }
   })
 )
 
