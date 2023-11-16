@@ -7,7 +7,7 @@ export default flatMap(
   sql =>
     sql`
     CREATE TABLE products (
-      id int PRIMARY KEY,
+      id int PRIMARY KEY auto_increment,
       code varchar(255) NOT NULL,
       name varchar(255) NOT NULL,
       description varchar(255) NOT NULL,
@@ -15,8 +15,8 @@ export default flatMap(
       quantity int NOT NULL,
       inventoryStatus varchar(255) NOT NULL,
       category varchar(255) NOT NULL,
-      image varchar(255) NOT NULL,
-      rating int NOT NULL
+      image varchar(255),
+      rating int
     )
   `
 )

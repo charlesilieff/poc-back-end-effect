@@ -51,35 +51,22 @@ export const makeProductSqlLive = L.effect(
       T.gen(function* (_) {
         yield* _(T.logInfo(`Inserting product ${product.code}`))
 
-        // yield* _(
-        //   mysql`INSERT INTO products (id, code, name, description, image, price, category, quantity, inventoryStatus, rating) VALUES (1, '${product.code}', '${product.name}', '${product.description}', '${
-        //     product.image !== undefined ? `${product.image}` : 'NULL'
-        //   }', ${product.price}, '${product.category}', ${product.quantity}, '${product.inventoryStatus}', ${
-        //     product.rating !== undefined ? product.rating : 'NULL'
-        //   })`
-        // )
-
-        const insert = yield* _(
+        const { id } = yield* _(
           mysql.resolver(
             'InsertProduct',
             {
-              result: Sc.unknown,
+              result: Sc.struct({ id: ProductId }),
               request: pipe(Product, Sc.omit('id')),
               run: requests =>
                 mysql`
               INSERT INTO products
-              ${mysql.insert(requests)} RETURNING code
+              ${mysql.insert(requests)} RETURNING id
             `
             }
           ).execute(product)
         )
 
-        // const result = yield* _(
-        //   mysql`INSERT INTO products (code, name, description, image, price, category, quantity, inventoryStatus, rating) VALUES ('code', 'name', 'description', 'image', 1, 'category', 1, 'inventoryStatus', 1)`
-        // )
-        console.log('result', { insert })
-
-        return yield* _(Sc.parse(ProductId)(3))
+        return id
       }).pipe(T.tapError(T.logError))
 
     const removeOneProductRepo: ProductRepositoryService['removeOneProductRepo'] = () =>
