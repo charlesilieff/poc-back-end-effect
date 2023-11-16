@@ -1,9 +1,10 @@
 import * as Sc from '@effect/schema/Schema'
 import * as Mysql from '@sqlfx/mysql'
-import { Effect as T, Layer as L } from 'effect'
+import { Effect as T, Layer as L, ReadonlyArray as A } from 'effect'
 
-import { Product } from '../../../models/Product.js'
-import { ProductRepositoryService } from '../products.js'
+import { Product } from '../../../models/Product'
+import { ProductNotFoundError } from '../../../services/products/errors/ProductNotFoundError'
+import { ProductRepositoryService } from '../products'
 
 export const makeProductSqlLive = L.effect(
   ProductRepositoryService,
@@ -12,12 +13,16 @@ export const makeProductSqlLive = L.effect(
 
     const getOneProductRepo: ProductRepositoryService['getOneProductRepo'] = id =>
       T.gen(function* (_) {
-        const product = yield* _(
+        const products = yield* _(
           mysql`SELECT * FROM product WHERE id = ${id}`
         )
-        yield* _(T.logInfo(`One product founded : ${product}`))
+        const productOption = A.get(products, 0)
 
-        return yield* _(Sc.parse(Product)(product))
+        return yield* _(
+          productOption,
+          T.mapError(_ => ProductNotFoundError.of('Product not found')),
+          T.flatMap(Sc.parse(Product))
+        )
       })
 
     const getProductsRepo: ProductRepositoryService['getProductsRepo'] = () =>
@@ -38,7 +43,6 @@ export const makeProductSqlLive = L.effect(
         yield* _(
           mysql`INSERT INTO product (code) VALUES (${product.code})`
         )
-        yield* _(T.logInfo(`Product inserted : ${product}`))
 
         return product.id
       })

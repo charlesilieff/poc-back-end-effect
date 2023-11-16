@@ -1,7 +1,8 @@
 import { Effect as T, Layer as L, pipe } from 'effect'
 
-import { ProductRepositoryService } from '../../../repository/products/products.js'
-import { ProductService } from '../products-service.js'
+import { ProductRepositoryService } from '../../../repository/products/products'
+import { ProductNotFoundError } from '../errors/ProductNotFoundError'
+import { ProductService } from '../products-service'
 
 export const makeProductServiceLive = L.effect(
   ProductService,
@@ -15,7 +16,11 @@ export const makeProductServiceLive = L.effect(
     } = yield* _(ProductRepositoryService)
 
     const getOneProduct: ProductService['getOneProduct'] = id =>
-      pipe(getOneProductRepo(id), T.catchAll(() => T.die('Not found')))
+      pipe(
+        getOneProductRepo(id),
+        T.tapError(T.logError),
+        T.mapError(e => ProductNotFoundError.of(`Product not found: ${e._tag}`))
+      )
 
     const getProducts: ProductService['getProducts'] = () =>
       pipe(
@@ -27,8 +32,8 @@ export const makeProductServiceLive = L.effect(
     const patchOneProduct: ProductService['patchOneProduct'] = product =>
       pipe(patchOneProductRepo(product), T.catchAll(() => T.die('Not found')))
 
-    const postProducts: ProductService['postProducts'] = product =>
-      pipe(postProductsRepo(product), T.catchAll(() => T.die('Something went wrong')))
+    const postProducts: ProductService['createProduct'] = product =>
+      pipe(postProductsRepo(product), T.catchAll(e => T.die(`Something went wrong : ${e._tag}`)))
 
     const removeOneProduct: ProductService['removeOneProduct'] = id =>
       pipe(
@@ -41,7 +46,7 @@ export const makeProductServiceLive = L.effect(
       getOneProduct,
       getProducts,
       patchOneProduct,
-      postProducts,
+      createProduct: postProducts,
       removeOneProduct
     })
   })

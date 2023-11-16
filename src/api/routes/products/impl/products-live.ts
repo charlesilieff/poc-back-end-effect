@@ -1,8 +1,11 @@
+import * as Sc from '@effect/schema/Schema'
 import { Effect as T, pipe } from 'effect'
 import * as Http from 'effect-http'
+import { invalidParamsError, invalidResponseError } from 'effect-http/ServerError'
 
-import { ProductService } from '../../../../services/products/products-service.js'
-import { productRoutes } from '../products.js'
+import { ProductId } from '../../../../models/Product'
+import { ProductService } from '../../../../services/products/products-service'
+import { productRoutes } from '../products'
 
 export const ProductRoutes = T.gen(function* (_) {
   const productService = yield* _(ProductService)
@@ -12,16 +15,24 @@ export const ProductRoutes = T.gen(function* (_) {
   const getProductsHandler = productService.getProducts
 
   const postProductsHandler = ({ body }: Http.Input<ProductsRoutes, 'postProducts'>) =>
-    productService.postProducts(body)
+    productService.createProduct(body)
 
   const getOneProductHandler = ({ params }: Http.Input<ProductsRoutes, 'getOneProduct'>) =>
-    productService.getOneProduct(params.id)
+    pipe(
+      Sc.parse(ProductId)(+params.id),
+      T.mapError(parseError => invalidParamsError(parseError.errors)),
+      T.flatMap(productId =>
+        productService.getOneProduct(productId).pipe(
+          T.mapError(() => invalidResponseError('Product not found'))
+        )
+      )
+    )
 
   const patchOneProductHandler = ({ body }: Http.Input<ProductsRoutes, 'patchOneProduct'>) =>
     productService.patchOneProduct(body)
 
   const removeOneProductHandler = ({ params }: Http.Input<ProductsRoutes, 'removeOneProduct'>) =>
-    productService.removeOneProduct(params.id)
+    productService.removeOneProduct(Sc.parseSync(ProductId)(+params.id))
 
   const ProductsRoutes = pipe(
     Http.api({ title: 'Products Routes' }),

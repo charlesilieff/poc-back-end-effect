@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "ESNext",
-    "module": "NodeNext",
+    "module": "CommonJS",
     "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
@@ -17,6 +17,7 @@
     "src/**/*.ts"
   ],
   "exclude": [
+    "jest.config.cjs",
     "node_modules"
   ]
 }

@@ -6,7 +6,7 @@ export default T.flatMap(
   sql =>
     sql`
     CREATE TABLE product (
-      id serial PRIMARY KEY,
+      id int unsigned PRIMARY KEY,
       code varchar(255) NOT NULL
     )
   `

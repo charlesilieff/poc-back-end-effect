@@ -1,6 +1,6 @@
 import { Effect as T, Layer as L } from 'effect'
 
-import { ProductRepositoryService } from '../products.js'
+import { ProductRepositoryService } from '../products'
 
 export const makeProductServiceLive = L.effect(
   ProductRepositoryService,

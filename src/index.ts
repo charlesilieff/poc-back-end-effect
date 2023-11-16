@@ -1,10 +1,10 @@
 import { Effect as T, pipe } from 'effect'
 import * as Http from 'effect-http'
 
-import { ProductRoutes } from './api/routes/products/impl/products-live.js'
-import { MigrationLayer, MysqlLive } from './repository/products/sql-impl/mysql-live.js'
-import { makeProductSqlLive } from './repository/products/sql-impl/sql-product-service-live.js'
-import { makeProductServiceLive } from './services/products/impl/product-service-live.js'
+import { ProductRoutes } from './api/routes/products/impl/products-live'
+import { MigrationLayer, MysqlLive } from './repository/products/sql-impl/mysql-live'
+import { makeProductSqlLive } from './repository/products/sql-impl/sql-product-service-live'
+import { makeProductServiceLive } from './services/products/impl/product-service-mysql-live'
 
 const PORT = 3000
 
