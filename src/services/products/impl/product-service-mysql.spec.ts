@@ -1,8 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unsafe-return */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-// import { describe, it } from 'node:test'
-
 import * as Sc from '@effect/schema/Schema'
 import { Effect as T } from 'effect'
 
@@ -23,7 +18,7 @@ describe('Product Service', () => {
         const productService = yield* _(ProductService)
         const productId = Sc.parseSync(ProductId)(1)
         const product = yield* _(productService.getOneProduct(productId))
-        console.log(product)
+
         expect(product.id).toBe(productId)
       }).pipe(
         T.provide(makeProductServiceLive),

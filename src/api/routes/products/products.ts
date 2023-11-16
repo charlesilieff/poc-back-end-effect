@@ -4,7 +4,7 @@ import * as Http from 'effect-http'
 
 import { Product, ProductId } from '../../../models/Product'
 
-const postProducts = pipe(
+export const postProducts = pipe(
   Http.post('postProducts', '/products', {
     response: ProductId,
     request: { body: Product }
@@ -19,7 +19,7 @@ const getProducts = pipe(
 
 // IMPORTANT: '/products/:id' is checked at runtime to be a valid path, '/products/:pram' will not run
 
-const getOneProduct = pipe(
+export const getOneProduct = pipe(
   Http.get('getOneProduct', '/products/:id', {
     response: Product,
     request: { params: Sc.struct({ id: Sc.string }) }
@@ -40,7 +40,7 @@ const removeOneProduct = pipe(
   })
 )
 
-export const productRoutes = pipe(
+const productGroup = pipe(
   Http.apiGroup('Products'),
   postProducts,
   getProducts,
@@ -48,3 +48,8 @@ export const productRoutes = pipe(
   patchOneProduct,
   removeOneProduct
 )
+export const ProductsRoutes = pipe(
+  Http.api({ title: 'Products Routes' }),
+  Http.addGroup(productGroup)
+)
+export type ProductsRoutes = typeof ProductsRoutes

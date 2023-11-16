@@ -5,12 +5,10 @@ import { invalidParamsError, invalidResponseError } from 'effect-http/ServerErro
 
 import { ProductId } from '../../../../models/Product'
 import { ProductService } from '../../../../services/products/products-service'
-import { productRoutes } from '../products'
+import { ProductsRoutes } from '../products'
 
 export const ProductRoutes = T.gen(function* (_) {
   const productService = yield* _(ProductService)
-
-  type ProductsRoutes = typeof ProductsRoutes
 
   const getProductsHandler = productService.getProducts
 
@@ -33,11 +31,6 @@ export const ProductRoutes = T.gen(function* (_) {
 
   const removeOneProductHandler = ({ params }: Http.Input<ProductsRoutes, 'removeOneProduct'>) =>
     productService.removeOneProduct(Sc.parseSync(ProductId)(+params.id))
-
-  const ProductsRoutes = pipe(
-    Http.api({ title: 'Products Routes' }),
-    Http.addGroup(productRoutes)
-  )
 
   return pipe(
     ProductsRoutes,
