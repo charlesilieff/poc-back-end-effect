@@ -3,9 +3,9 @@ import { Effect as T, Option as O } from 'effect'
 import * as Http from 'effect-http'
 import { mockClient } from 'effect-http'
 
-import type { Product } from '../../../../models/Product'
-import { ProductId } from '../../../../models/Product'
-import { getOneProduct } from '../products'
+import type { Product } from '../../../../models/Product.js'
+import { ProductId } from '../../../../models/Product.js'
+import { getOneProduct } from '../products.js'
 
 describe('Product Api', () => {
   it(
@@ -16,10 +16,10 @@ describe('Product Api', () => {
         const product: Product = {
           id: productId,
           code: '123',
-          category: 'category',
+          category: 'Accessories',
           description: 'description',
           image: O.none(),
-          inventoryStatus: 'inventoryStatus',
+          inventoryStatus: 'INSTOCK',
           name: 'name',
           price: 1,
           quantity: 1,

@@ -3,9 +3,9 @@ import { Effect as T, pipe } from 'effect'
 import * as Http from 'effect-http'
 import { invalidParamsError, invalidResponseError } from 'effect-http/ServerError'
 
-import { ProductId } from '../../../../models/Product'
-import { ProductService } from '../../../../services/products/products-service'
-import { ProductsRoutes } from '../products'
+import { ProductId } from '../../../../models/Product.js'
+import { ProductService } from '../../../../services/products/products-service.js'
+import { ProductsRoutes } from '../products.js'
 
 export const ProductRoutes = T.gen(function* (_) {
   const productService = yield* _(ProductService)

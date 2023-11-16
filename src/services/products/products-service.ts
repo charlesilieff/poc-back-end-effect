@@ -1,7 +1,7 @@
 import { Context, type Effect as T } from 'effect'
 
-import type { Product, ProductId } from '../../models/Product'
-import type { ProductNotFoundError } from './errors/ProductNotFoundError'
+import type { Product, ProductId } from '../../models/Product.js'
+import type { ProductNotFoundError } from './errors/ProductNotFoundError.js'
 
 export interface ProductService {
   getProducts: () => T.Effect<never, never, ReadonlyArray<Product>>

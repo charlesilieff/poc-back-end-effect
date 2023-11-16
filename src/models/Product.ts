@@ -11,8 +11,8 @@ export const Product = Sc.struct({
   description: Sc.string,
   price: Sc.number,
   quantity: Sc.number,
-  inventoryStatus: Sc.string,
-  category: Sc.string,
+  inventoryStatus: Sc.literal('INSTOCK', 'LOWSTOCK', 'OUTOFSTOCK'),
+  category: Sc.literal('Accessories', 'Clothing', 'Electronics', 'Fitness'),
   image: Sc.optional(Sc.string).toOption(),
   rating: Sc.number
 })

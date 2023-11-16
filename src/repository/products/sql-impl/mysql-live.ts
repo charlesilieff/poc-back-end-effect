@@ -1,3 +1,5 @@
+import { fileURLToPath } from 'node:url'
+
 import * as Mysql from '@sqlfx/mysql'
 import { fromDisk, makeLayer } from '@sqlfx/mysql/Migrator'
 import { ConfigSecret } from 'effect'
@@ -17,7 +19,7 @@ export const MysqlLive = Mysql.makeLayer({
 
 export const MigrationLayer = makeLayer({
   loader: fromDisk(
-    `./dist/repository/products/sql-impl/migrations`
+    `${fileURLToPath(new URL('.', import.meta.url))}/migrations`
   )
   // // Where to put the `_schema.sql` file
   // schemaDirectory: 'src/migrations'

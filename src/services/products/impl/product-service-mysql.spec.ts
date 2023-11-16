@@ -1,11 +1,11 @@
 import * as Sc from '@effect/schema/Schema'
 import { Effect as T } from 'effect'
 
-import { Product, ProductId } from '../../../models/Product'
-import { MysqlLive } from '../../../repository/products/sql-impl/mysql-live'
-import { makeProductSqlLive } from '../../../repository/products/sql-impl/sql-product-service-live'
-import { ProductService } from '../products-service'
-import { makeProductServiceLive } from './product-service-mysql-live'
+import { Product, ProductId } from '../../../models/Product.js'
+import { MysqlLive } from '../../../repository/products/sql-impl/mysql-live.js'
+import { makeProductSqlLive } from '../../../repository/products/sql-impl/sql-product-service-live.js'
+import { ProductService } from '../products-service.js'
+import { makeProductServiceLive } from './product-service-mysql-live.js'
 
 // TODO: after all tests delete all data
 // TODO : provide service for all tests

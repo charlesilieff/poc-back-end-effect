@@ -1,8 +1,8 @@
 import { Effect as T, Layer as L, pipe } from 'effect'
 
-import { ProductRepositoryService } from '../../../repository/products/products'
-import { ProductNotFoundError } from '../errors/ProductNotFoundError'
-import { ProductService } from '../products-service'
+import { ProductRepositoryService } from '../../../repository/products/products.js'
+import { ProductNotFoundError } from '../errors/ProductNotFoundError.js'
+import { ProductService } from '../products-service.js'
 
 export const makeProductServiceLive = L.effect(
   ProductService,

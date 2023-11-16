@@ -2,9 +2,9 @@ import * as Sc from '@effect/schema/Schema'
 import * as Mysql from '@sqlfx/mysql'
 import { Effect as T, Layer as L, ReadonlyArray as A } from 'effect'
 
-import { Product } from '../../../models/Product'
-import { ProductNotFoundError } from '../../../services/products/errors/ProductNotFoundError'
-import { ProductRepositoryService } from '../products'
+import { Product } from '../../../models/Product.js'
+import { ProductNotFoundError } from '../../../services/products/errors/ProductNotFoundError.js'
+import { ProductRepositoryService } from '../products.js'
 
 export const makeProductSqlLive = L.effect(
   ProductRepositoryService,

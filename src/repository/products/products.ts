@@ -2,8 +2,8 @@ import type { ParseError } from '@effect/schema/ParseResult'
 import type { SqlError } from '@sqlfx/mysql/Error'
 import { Context, type Effect as T } from 'effect'
 
-import type { Product, ProductId } from '../../models/Product'
-import type { ProductNotFoundError } from '../../services/products/errors/ProductNotFoundError'
+import type { Product, ProductId } from '../../models/Product.js'
+import type { ProductNotFoundError } from '../../services/products/errors/ProductNotFoundError.js'
 
 export interface ProductRepositoryService {
   getProductsRepo: () => T.Effect<never, SqlError | ParseError, ReadonlyArray<Product>>
