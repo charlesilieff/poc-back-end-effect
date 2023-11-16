@@ -3,6 +3,7 @@
   "module": "src/index.ts",
   "type": "module",
   "scripts": {
+    "dev": "tsc -p tsconfig.json --watch",
     "lint": "tsc && eslint . --ext .ts,.tsx",
     "fmt": "dprint fmt",
     "build": "tsc -p tsconfig.json",

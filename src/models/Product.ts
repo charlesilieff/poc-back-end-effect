@@ -5,8 +5,8 @@ export type ProductId = number & B.Brand<'ProductId'>
 export const ProductId = Sc.number.pipe(Sc.brand('ProductId'))
 
 export const Product = Sc.struct({
-  id: ProductId
-  // code: Sc.string,
+  id: ProductId,
+  code: Sc.string
   // name: Sc.string,
   // description: Sc.string,
   // price: Sc.number,

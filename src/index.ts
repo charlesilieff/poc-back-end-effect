@@ -12,10 +12,10 @@ const PORT = 3000
 
 pipe(
   ProductRoutes,
+  T.flatMap(Http.listen({ port: PORT })),
   T.provide(makeProductServiceLive),
   T.provide(makeProductSqlLive),
   T.provide(MigrationLayer),
   T.provide(MysqlLive),
-  T.flatMap(Http.listen({ port: PORT })),
   T.runPromise
 )
