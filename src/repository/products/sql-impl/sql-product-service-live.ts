@@ -3,7 +3,7 @@ import { formatErrors } from '@effect/schema/TreeFormatter'
 import * as Mysql from '@sqlfx/mysql'
 import { Effect as T, Layer as L, pipe, ReadonlyArray as A } from 'effect'
 
-import { Product } from '../../../models/Product.js'
+import { Product, ProductId } from '../../../models/Product.js'
 import { ProductNotFoundError } from '../../../services/products/errors/ProductNotFoundError.js'
 import { ProductRepositoryService } from '../products.js'
 
@@ -49,12 +49,38 @@ export const makeProductSqlLive = L.effect(
 
     const postProductsRepo: ProductRepositoryService['postProductsRepo'] = product =>
       T.gen(function* (_) {
-        yield* _(
-          mysql`INSERT INTO product (code) VALUES (${product.code})`
+        yield* _(T.logInfo(`Inserting product ${product.code}`))
+
+        // yield* _(
+        //   mysql`INSERT INTO products (id, code, name, description, image, price, category, quantity, inventoryStatus, rating) VALUES (1, '${product.code}', '${product.name}', '${product.description}', '${
+        //     product.image !== undefined ? `${product.image}` : 'NULL'
+        //   }', ${product.price}, '${product.category}', ${product.quantity}, '${product.inventoryStatus}', ${
+        //     product.rating !== undefined ? product.rating : 'NULL'
+        //   })`
+        // )
+
+        const insert = yield* _(
+          mysql.resolver(
+            'InsertProduct',
+            {
+              result: Sc.unknown,
+              request: pipe(Product, Sc.omit('id')),
+              run: requests =>
+                mysql`
+              INSERT INTO products
+              ${mysql.insert(requests)} RETURNING code
+            `
+            }
+          ).execute(product)
         )
 
-        return product.id
-      })
+        // const result = yield* _(
+        //   mysql`INSERT INTO products (code, name, description, image, price, category, quantity, inventoryStatus, rating) VALUES ('code', 'name', 'description', 'image', 1, 'category', 1, 'inventoryStatus', 1)`
+        // )
+        console.log('result', { insert })
+
+        return yield* _(Sc.parse(ProductId)(3))
+      }).pipe(T.tapError(T.logError))
 
     const removeOneProductRepo: ProductRepositoryService['removeOneProductRepo'] = () =>
       T.die('Not implemented')

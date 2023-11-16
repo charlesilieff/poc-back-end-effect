@@ -10,11 +10,23 @@ import { ProductsRoutes } from '../products.js'
 export const ProductRoutes = T.gen(function* (_) {
   const productService = yield* _(ProductService)
 
-  RouterBuilder.handle
+  const getProductsHandler = () =>
+    T.map(productService.getProducts(), products => ({
+      content: { data: products },
+      headers: {
+        'access-control-allow-origin': '*'
+      },
+      status: 200 as const
+    }))
 
-  const getProductsHandler = productService.getProducts
-
-  const postProductsHandler = ({ body }: { body: Product }) => productService.createProduct(body)
+  const postProductsHandler = ({ body }: { body: Product }) =>
+    T.map(productService.createProduct(body), productId => ({
+      content: { data: productId },
+      headers: {
+        'access-control-allow-origin': '*'
+      },
+      status: 200 as const
+    }))
 
   const getOneProductHandler = ({ params }: { params: { id: string } }) =>
     pipe(
@@ -49,6 +61,19 @@ export const ProductRoutes = T.gen(function* (_) {
     RouterBuilder.handle('getOneProduct', getOneProductHandler),
     RouterBuilder.handle('patchOneProduct', patchOneProductHandler),
     RouterBuilder.handle('removeOneProduct', removeOneProductHandler),
+    RouterBuilder.handle(
+      'optionProducts',
+      () =>
+        T.succeed({
+          // eslint-disable-next-line @typescript-eslint/naming-convention
+          headers: {
+            'access-control-allow-methods': 'GET, POST, OPTIONS, PATCH, DELETE',
+            'access-control-allow-origin': '*',
+            'access-control-allow-headers': 'Content-Type, Authorization'
+          },
+          status: 200 as const
+        })
+    ),
     // Check if all routes are implemented
     RouterBuilder.build
   )

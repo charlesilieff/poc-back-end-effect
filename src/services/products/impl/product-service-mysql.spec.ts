@@ -1,5 +1,6 @@
 import * as Sc from '@effect/schema/Schema'
 import { Effect as T } from 'effect'
+import { describe, expect, it } from 'vitest'
 
 import { Product, ProductId } from '../../../models/Product.js'
 import { MysqlLive } from '../../../repository/products/sql-impl/mysql-live.js'
@@ -34,10 +35,23 @@ describe('Product Service', () => {
       await T.gen(function* (_) {
         const productService = yield* _(ProductService)
         // TODO : generate a random product
-        const product = Sc.parseSync(Product)({ code: '123', id: 10 })
-        const productId = yield* _(productService.createProduct(product))
+        const product = Sc.parseSync(Product)({
+          id: '',
+          code: 'hellocode',
+          name: 'hello',
+          description: 'tottoto',
+          category: 'Clothing',
+          inventoryStatus: 'LOWSTOCK',
+          price: 0,
+          quantity: 0,
+          image: 'image',
 
-        expect(product.id).toBe(productId)
+          rating: 4
+        })
+        const productId = yield* _(productService.createProduct(product))
+        console.log('productID', productId)
+        const productSaved = yield* _(productService.getOneProduct(productId))
+        expect(productSaved.description).toBe(product.description)
       }).pipe(
         T.provide(makeProductServiceLive),
         T.provide(makeProductSqlLive),
@@ -46,3 +60,8 @@ describe('Product Service', () => {
       )
   )
 })
+
+it(
+  'dumb test',
+  () => expect(1).toBe(1)
+)

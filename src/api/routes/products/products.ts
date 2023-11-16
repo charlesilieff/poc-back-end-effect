@@ -4,20 +4,46 @@ import { Api } from 'effect-http'
 
 import { Product, ProductId } from '../../../models/Product.js'
 
-export const postProducts = pipe(
+const optionProduct = pipe(
+  Api.options('optionProducts', '/products', {
+    response: {
+      status: 200,
+
+      headers: Sc.struct({
+        'Access-Control-Allow-Methods': Sc.string,
+        'Access-Control-Allow-Origin': Sc.string,
+        'Access-Control-Allow-Headers': Sc.string
+      })
+    }
+  }, { description: 'CORS handler' })
+)
+
+const postProducts = pipe(
   Api.post('postProducts', '/products', {
-    response: ProductId,
+    response: {
+      status: 200,
+      content: Sc.struct({ data: ProductId }),
+      headers: Sc.struct({
+        'Access-Control-Allow-Origin': Sc.string
+      })
+    },
     request: { body: Product }
   }, { description: 'Create a new product' })
 )
 
 const getProducts = pipe(
   Api.get('getProducts', '/products', {
-    response: Sc.array(Product)
+    response: {
+      status: 200,
+      content: Sc.struct({ data: Sc.array(Product) }),
+      headers: Sc.struct({
+        'Access-Control-Allow-Origin': Sc.string
+      })
+    }
   }, { description: 'Returns all products' })
 )
 
-// IMPORTANT: '/products/:id' is checked at runtime to be a valid path, '/products/:pram' will not run
+// IMPORTANT: '/products/:id' is checked at runtime to be a valid path, '/products/:param' will not run
 
 export const getOneProduct = pipe(
   Api.get('getOneProduct', '/products/:id', {
@@ -42,6 +68,7 @@ const removeOneProduct = pipe(
 
 const productGroup = pipe(
   Api.apiGroup('Products'),
+  optionProduct,
   postProducts,
   getProducts,
   getOneProduct,
