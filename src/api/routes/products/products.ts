@@ -1,18 +1,18 @@
 import * as Sc from '@effect/schema/Schema'
 import { pipe } from 'effect'
-import * as Http from 'effect-http'
+import { Api } from 'effect-http'
 
 import { Product, ProductId } from '../../../models/Product.js'
 
 export const postProducts = pipe(
-  Http.post('postProducts', '/products', {
+  Api.post('postProducts', '/products', {
     response: ProductId,
     request: { body: Product }
   }, { description: 'Create a new product' })
 )
 
 const getProducts = pipe(
-  Http.get('getProducts', '/products', {
+  Api.get('getProducts', '/products', {
     response: Sc.array(Product)
   }, { description: 'Returns all products' })
 )
@@ -20,28 +20,28 @@ const getProducts = pipe(
 // IMPORTANT: '/products/:id' is checked at runtime to be a valid path, '/products/:pram' will not run
 
 export const getOneProduct = pipe(
-  Http.get('getOneProduct', '/products/:id', {
+  Api.get('getOneProduct', '/products/:id', {
     response: Product,
     request: { params: Sc.struct({ id: Sc.string }) }
   })
 )
 
 const patchOneProduct = pipe(
-  Http.patch('patchOneProduct', '/products', {
+  Api.patch('patchOneProduct', '/products', {
     response: ProductId,
     request: { body: Product }
   })
 )
 
 const removeOneProduct = pipe(
-  Http.delete('removeOneProduct', '/products/:id', {
+  Api.delete('removeOneProduct', '/products/:id', {
     response: ProductId,
     request: { params: Sc.struct({ id: Sc.string }) }
   })
 )
 
 const productGroup = pipe(
-  Http.apiGroup('Products'),
+  Api.apiGroup('Products'),
   postProducts,
   getProducts,
   getOneProduct,
@@ -49,7 +49,7 @@ const productGroup = pipe(
   removeOneProduct
 )
 export const ProductsRoutes = pipe(
-  Http.api({ title: 'Products Routes' }),
-  Http.addGroup(productGroup)
+  Api.api({ title: 'Products Routes' }),
+  Api.addGroup(productGroup)
 )
 export type ProductsRoutes = typeof ProductsRoutes

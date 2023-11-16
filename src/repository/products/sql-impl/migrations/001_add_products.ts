@@ -7,7 +7,7 @@ export default flatMap(
   sql =>
     sql`
     CREATE TABLE products (
-      id serial PRIMARY KEY,
+      id int PRIMARY KEY,
       code varchar(255) NOT NULL,
       name varchar(255) NOT NULL,
       description varchar(255) NOT NULL,

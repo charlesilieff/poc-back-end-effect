@@ -8,7 +8,7 @@ export interface ProductService {
   createProduct: (product: Product) => T.Effect<never, never, ProductId>
   getOneProduct: (id: ProductId) => T.Effect<never, ProductNotFoundError, Product>
   patchOneProduct: (product: Product) => T.Effect<never, never, ProductId>
-  removeOneProduct: (id: ProductId) => T.Effect<never, never, ProductId>
+  removeOneProduct: (id: ProductId) => T.Effect<never, ProductNotFoundError, ProductId>
 }
 
 export const ProductService = Context.Tag<ProductService>()

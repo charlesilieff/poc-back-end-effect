@@ -1,6 +1,7 @@
 import * as Sc from '@effect/schema/Schema'
+import { formatErrors } from '@effect/schema/TreeFormatter'
 import * as Mysql from '@sqlfx/mysql'
-import { Effect as T, Layer as L, ReadonlyArray as A } from 'effect'
+import { Effect as T, Layer as L, pipe, ReadonlyArray as A } from 'effect'
 
 import { Product } from '../../../models/Product.js'
 import { ProductNotFoundError } from '../../../services/products/errors/ProductNotFoundError.js'
@@ -14,25 +15,33 @@ export const makeProductSqlLive = L.effect(
     const getOneProductRepo: ProductRepositoryService['getOneProductRepo'] = id =>
       T.gen(function* (_) {
         const products = yield* _(
-          mysql`SELECT * FROM product WHERE id = ${id}`
+          mysql`SELECT * FROM products WHERE id = ${id}`
         )
         const productOption = A.get(products, 0)
 
         return yield* _(
           productOption,
           T.mapError(_ => ProductNotFoundError.of('Product not found')),
-          T.flatMap(Sc.parse(Product))
+          T.flatMap(p =>
+            pipe(
+              p,
+              Sc.parse(Product),
+              T.tapError(e =>
+                T.logError(`Parse errors from database datas: ${formatErrors(e.errors)}`)
+              )
+            )
+          )
         )
       })
 
     const getProductsRepo: ProductRepositoryService['getProductsRepo'] = () =>
       T.gen(function* (_) {
         const products = yield* _(
-          mysql`SELECT * FROM product`
+          mysql`SELECT * FROM products`
         )
-        yield* _(T.logInfo(`All products founded : ${products}`))
+        yield* _(T.logInfo(`${products.length} products founded.`))
 
-        return yield* _(Sc.parse(Sc.array(Product))(products))
+        return yield* _(Sc.parse(Sc.array(Product))(products), T.tapError(T.logError))
       })
 
     const patchOneProductRepo: ProductRepositoryService['patchOneProductRepo'] = () =>
