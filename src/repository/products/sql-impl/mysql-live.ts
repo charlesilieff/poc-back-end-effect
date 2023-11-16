@@ -17,6 +17,8 @@ export const MysqlLive = Mysql.makeLayer({
 
 export const MigrationLayer = makeLayer({
   loader: fromDisk(
-    `./migrations`
+    `./dist/repository/products/sql-impl/migrations`
   )
+  // // Where to put the `_schema.sql` file
+  // schemaDirectory: 'src/migrations'
 })
