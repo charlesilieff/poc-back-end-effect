@@ -1,3 +1,5 @@
+import * as Middleware from '@effect/platform/Http/Middleware'
+import * as ServerResponse from '@effect/platform/Http/ServerResponse'
 import * as Sc from '@effect/schema/Schema'
 import { Effect as T, pipe } from 'effect'
 import { RouterBuilder, ServerError } from 'effect-http'
@@ -5,7 +7,7 @@ import { RouterBuilder, ServerError } from 'effect-http'
 import type { Product } from '../../../../models/Product.js'
 import { ProductId } from '../../../../models/Product.js'
 import { ProductService } from '../../../../services/products/products-service.js'
-import { corsMiddleware, ProductsRoutes } from '../products.js'
+import { ProductsRoutes } from '../products.js'
 
 export const ProductRoutes = T.gen(function* (_) {
   const productService = yield* _(ProductService)
@@ -41,6 +43,16 @@ export const ProductRoutes = T.gen(function* (_) {
       )
     )
 
+  const corsMiddleware = Middleware.make(app =>
+    T.flatMap(
+      app,
+      ServerResponse.setHeaders({
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        'access-control-allow-origin': 'http://localhost:4200'
+      })
+    )
+  )
+
   return pipe(
     ProductsRoutes,
     RouterBuilder.make,
@@ -55,7 +67,9 @@ export const ProductRoutes = T.gen(function* (_) {
         T.succeed({
           // eslint-disable-next-line @typescript-eslint/naming-convention
           headers: {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             'access-control-allow-methods': 'GET, POST, OPTIONS, PATCH, DELETE',
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             'access-control-allow-headers': 'Content-Type, Authorization'
           },
           status: 200 as const

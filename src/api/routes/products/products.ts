@@ -1,8 +1,5 @@
-import * as Middleware from '@effect/platform/Http/Middleware'
-import * as ServerResponse from '@effect/platform/Http/ServerResponse'
 import * as Sc from '@effect/schema/Schema'
 import { pipe } from 'effect'
-import { Effect as T } from 'effect'
 import { Api } from 'effect-http'
 
 import { Product, ProductId } from '../../../models/Product.js'
@@ -53,15 +50,6 @@ const removeOneProduct = pipe(
     response: ProductId,
     request: { params: Sc.struct({ id: Sc.string }) }
   })
-)
-
-export const corsMiddleware = Middleware.make(app =>
-  T.flatMap(
-    app,
-    ServerResponse.setHeaders({
-      'Access-Control-Allow-Origin': 'http://localhost:4200'
-    })
-  )
 )
 
 const productGroup = pipe(

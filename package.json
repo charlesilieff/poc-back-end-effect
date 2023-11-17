@@ -15,7 +15,7 @@
     "@effect/platform-node": "0.31.2",
     "@sqlfx/mysql": "0.30.1",
     "@types/node": "^20.9.0",
-    "effect-http": "0.37.1"
+    "effect-http": "0.38.3"
   },
   "devDependencies": {
     "ts-jest": "^29.1.1",
@@ -35,7 +35,7 @@
     "vitest": "^0.34.6"
   },
   "peerDependencies": {
-    "@effect/schema": "^0.48.0",
+    "@effect/schema": "^0.48.1",
     "effect": "2.0.0-next.55"
   }
 }
