@@ -38,6 +38,22 @@ export const ProductServiceTest = (
     )
 
     it(
+      'get a product not in database should return an error',
+      async () =>
+        await T.gen(function* (_) {
+          const productService = yield* _(ProductService)
+          const productId = Sc.parseSync(ProductId)(100000)
+          const productNotFound = yield* _(
+            productService.getOneProduct(productId),
+            T.catchAll(error => T.succeed(error))
+          )
+
+          // @ts-expect-error if test pass productNotFound is an error, and have a _tag property
+          expect(productNotFound._tag).toBe('ProductNotFoundError')
+        }).pipe(T.provide(layerProduct), T.runPromise)
+    )
+
+    it(
       'should create a product',
       async () =>
         await T.gen(function* (_) {
@@ -68,6 +84,32 @@ export const ProductServiceTest = (
 
           // @ts-expect-error if test pass productNotFound is an error, and have a _tag property
           expect(productNotFound._tag).toBe('ProductNotFoundError')
+        }).pipe(T.provide(layerProduct), T.runPromise)
+    )
+
+    it(
+      'should update a product',
+      async () =>
+        await T.gen(function* (_) {
+          const productService = yield* _(ProductService)
+
+          const productId = yield* _(productService.createProduct(product))
+
+          yield* _(productService.getOneProduct(productId))
+
+          yield* _(
+            productService.updateOneProduct({
+              ...product,
+              description: 'new description',
+              id: productId
+            })
+          )
+
+          const productUpdated = yield* _(
+            productService.getOneProduct(productId)
+          )
+
+          expect(productUpdated.description).toBe('new description')
         }).pipe(T.provide(layerProduct), T.runPromise)
     )
   })

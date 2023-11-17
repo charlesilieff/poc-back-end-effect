@@ -13,7 +13,13 @@ export interface ProductRepositoryService {
   getOneProductRepo: (
     id: ProductId
   ) => T.Effect<never, SqlError | ParseError | ProductNotFoundError, Product>
-  patchOneProductRepo: (product: Product) => T.Effect<never, SqlError | ParseError, ProductId>
+  patchOneProductRepo: (
+    product: Product
+  ) => T.Effect<
+    never,
+    ProductNotFoundError | SqlError | ResultLengthMismatch | SchemaError,
+    ProductId
+  >
   removeOneProductRepo: (id: ProductId) => T.Effect<never, SqlError | ParseError, ProductId>
 }
 

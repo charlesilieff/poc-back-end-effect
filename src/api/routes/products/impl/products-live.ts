@@ -30,7 +30,7 @@ export const ProductRoutes = T.gen(function* (_) {
     )
 
   const patchOneProductHandler = ({ body }: { body: Product }) =>
-    productService.patchOneProduct(body)
+    productService.updateOneProduct(body)
 
   const removeOneProductHandler = ({ params }: { params: { id: string } }) =>
     pipe(

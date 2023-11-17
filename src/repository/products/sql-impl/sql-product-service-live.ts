@@ -44,8 +44,23 @@ export const makeProductSqlLive = L.effect(
         return yield* _(Sc.parse(Sc.array(Product))(products), T.tapError(T.logError))
       })
 
-    const patchOneProductRepo: ProductRepositoryService['patchOneProductRepo'] = () =>
-      T.die('Not implemented')
+    const patchOneProductRepo: ProductRepositoryService['patchOneProductRepo'] = product =>
+      T.gen(function* (_) {
+        yield* _(T.logInfo(`Updating a product ${product.code}`))
+
+        if (product.id === undefined) {
+          yield* _(ProductNotFoundError.of('Product id is undefined'))
+        } else {
+          yield* _(
+            mysql`UPDATE products SET code = ${product.code}, name = ${product.name}, description = ${product.description}, category = ${product.category}, inventoryStatus = ${product.inventoryStatus}, price = ${product.price}, quantity = ${product.quantity}, image = ${
+              product.image ?? null
+            }, rating = ${product.rating ?? null} WHERE id = ${product.id}
+          ${mysql.updateValues([{ ...product, id: product.id }], 'data')}`
+          )
+        }
+
+        return Sc.parseSync(ProductId)(product.id)
+      }).pipe(T.tapError(T.logError))
 
     const postProductsRepo: ProductRepositoryService['postProductsRepo'] = product =>
       T.gen(function* (_) {

@@ -7,7 +7,7 @@ export interface ProductService {
   getProducts: () => T.Effect<never, never, ReadonlyArray<Product>>
   createProduct: (product: Product) => T.Effect<never, never, ProductId>
   getOneProduct: (id: ProductId) => T.Effect<never, ProductNotFoundError, Product>
-  patchOneProduct: (product: Product) => T.Effect<never, never, ProductId>
+  updateOneProduct: (product: Product) => T.Effect<never, never, ProductId>
   removeOneProduct: (id: ProductId) => T.Effect<never, ProductNotFoundError, ProductId>
 }
 

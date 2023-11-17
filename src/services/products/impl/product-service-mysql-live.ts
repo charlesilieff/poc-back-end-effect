@@ -29,7 +29,7 @@ export const makeProductServiceLive = L.effect(
         T.catchAll(() => T.die('Not found'))
       )
 
-    const patchOneProduct: ProductService['patchOneProduct'] = product =>
+    const patchOneProduct: ProductService['updateOneProduct'] = product =>
       pipe(patchOneProductRepo(product), T.catchAll(() => T.die('Not found')))
 
     const postProducts: ProductService['createProduct'] = product =>
@@ -45,7 +45,7 @@ export const makeProductServiceLive = L.effect(
     return ProductService.of({
       getOneProduct,
       getProducts,
-      patchOneProduct,
+      updateOneProduct: patchOneProduct,
       createProduct: postProducts,
       removeOneProduct
     })
