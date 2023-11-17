@@ -9,7 +9,7 @@ export default flatMap(
     CREATE TABLE products (
       id int PRIMARY KEY auto_increment,
       code varchar(255) NOT NULL,
-      name varchar(255) NOT NULL,
+      name varchar(255) NOT NULL, 
       description varchar(255) NOT NULL,
       price int NOT NULL,
       quantity int NOT NULL,
