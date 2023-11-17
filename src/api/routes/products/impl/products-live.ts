@@ -5,28 +5,16 @@ import { RouterBuilder, ServerError } from 'effect-http'
 import type { Product } from '../../../../models/Product.js'
 import { ProductId } from '../../../../models/Product.js'
 import { ProductService } from '../../../../services/products/products-service.js'
-import { ProductsRoutes } from '../products.js'
+import { corsMiddleware, ProductsRoutes } from '../products.js'
 
 export const ProductRoutes = T.gen(function* (_) {
   const productService = yield* _(ProductService)
 
   const getProductsHandler = () =>
-    T.map(productService.getProducts(), products => ({
-      content: { data: products },
-      headers: {
-        'access-control-allow-origin': '*'
-      },
-      status: 200 as const
-    }))
+    T.map(productService.getProducts(), products => ({ data: products }))
 
   const postProductsHandler = ({ body }: { body: Product }) =>
-    T.map(productService.createProduct(body), productId => ({
-      content: { data: productId },
-      headers: {
-        'access-control-allow-origin': '*'
-      },
-      status: 200 as const
-    }))
+    T.map(productService.createProduct(body), productId => ({ data: productId }))
 
   const getOneProductHandler = ({ params }: { params: { id: string } }) =>
     pipe(
@@ -68,13 +56,13 @@ export const ProductRoutes = T.gen(function* (_) {
           // eslint-disable-next-line @typescript-eslint/naming-convention
           headers: {
             'access-control-allow-methods': 'GET, POST, OPTIONS, PATCH, DELETE',
-            'access-control-allow-origin': '*',
             'access-control-allow-headers': 'Content-Type, Authorization'
           },
           status: 200 as const
         })
     ),
     // Check if all routes are implemented
-    RouterBuilder.build
+    RouterBuilder.build,
+    corsMiddleware
   )
 })

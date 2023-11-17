@@ -1,5 +1,8 @@
+import * as Middleware from '@effect/platform/Http/Middleware'
+import * as ServerResponse from '@effect/platform/Http/ServerResponse'
 import * as Sc from '@effect/schema/Schema'
 import { pipe } from 'effect'
+import { Effect as T } from 'effect'
 import { Api } from 'effect-http'
 
 import { Product, ProductId } from '../../../models/Product.js'
@@ -8,10 +11,8 @@ const optionProduct = pipe(
   Api.options('optionProducts', '/products', {
     response: {
       status: 200,
-
       headers: Sc.struct({
         'Access-Control-Allow-Methods': Sc.string,
-        'Access-Control-Allow-Origin': Sc.string,
         'Access-Control-Allow-Headers': Sc.string
       })
     }
@@ -20,26 +21,14 @@ const optionProduct = pipe(
 
 const postProducts = pipe(
   Api.post('postProducts', '/products', {
-    response: {
-      status: 200,
-      content: Sc.struct({ data: ProductId }),
-      headers: Sc.struct({
-        'Access-Control-Allow-Origin': Sc.string
-      })
-    },
+    response: Sc.struct({ data: ProductId }),
     request: { body: Product }
   }, { description: 'Create a new product' })
 )
 
 const getProducts = pipe(
   Api.get('getProducts', '/products', {
-    response: {
-      status: 200,
-      content: Sc.struct({ data: Sc.array(Product) }),
-      headers: Sc.struct({
-        'Access-Control-Allow-Origin': Sc.string
-      })
-    }
+    response: Sc.struct({ data: Sc.array(Product) })
   }, { description: 'Returns all products' })
 )
 
@@ -64,6 +53,15 @@ const removeOneProduct = pipe(
     response: ProductId,
     request: { params: Sc.struct({ id: Sc.string }) }
   })
+)
+
+export const corsMiddleware = Middleware.make(app =>
+  T.flatMap(
+    app,
+    ServerResponse.setHeaders({
+      'Access-Control-Allow-Origin': 'http://localhost:4200'
+    })
+  )
 )
 
 const productGroup = pipe(
