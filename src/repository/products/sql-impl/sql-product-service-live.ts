@@ -49,11 +49,11 @@ export const makeProductSqlLive = L.effect(
 
     const postProductsRepo: ProductRepositoryService['postProductsRepo'] = product =>
       T.gen(function* (_) {
-        yield* _(T.logInfo(`Inserting product ${product.code}`))
+        yield* _(T.logInfo(`Inserting a product ${product.code}`))
 
         const { id } = yield* _(
           mysql.resolver(
-            'InsertProduct',
+            'Insert a Product',
             {
               result: Sc.struct({ id: ProductId }),
               request: pipe(Product, Sc.omit('id')),
@@ -69,8 +69,15 @@ export const makeProductSqlLive = L.effect(
         return id
       }).pipe(T.tapError(T.logError))
 
-    const removeOneProductRepo: ProductRepositoryService['removeOneProductRepo'] = () =>
-      T.die('Not implemented')
+    const removeOneProductRepo: ProductRepositoryService['removeOneProductRepo'] = id =>
+      T.gen(function* (_) {
+        yield* _(T.logInfo(`Removing a product with id = ${id}`))
+        yield* _(
+          mysql`DELETE FROM products WHERE id = ${id}`
+        )
+
+        return id
+      }).pipe(T.tapError(T.logError))
 
     return ProductRepositoryService.of({
       getOneProductRepo,
