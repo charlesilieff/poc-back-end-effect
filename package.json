@@ -7,7 +7,8 @@
     "watch": "bun --watch src/index.ts",
     "lint": "tsc && eslint . --ext .ts,.tsx",
     "fmt": "dprint fmt",
-    "start": "bun src/index.ts"
+    "start": "bun src/index.ts",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@effect/platform": "0.31.0",
@@ -33,7 +34,8 @@
     "eslint-plugin-sort-destructure-keys": "1.5.0",
     "typescript": "5.2.2",
     "vite": "^5.0.0",
-    "vitest": "^0.34.6"
+    "vitest": "^0.34.6",
+    "husky": "^8.0.0"
   },
   "peerDependencies": {
     "@effect/schema": "^0.49.1",
