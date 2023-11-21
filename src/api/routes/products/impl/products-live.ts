@@ -44,11 +44,9 @@ export const ProductRoutes = T.gen(function* (_) {
       )
     )
 
-  const cors = Middleware.make(app =>
+  const corsMiddleware = Middleware.make(app =>
     T.gen(function* (_) {
       const request = yield* _(ServerRequest)
-
-      console.log(request.method)
 
       // @ts-expect-error typo on options method: it should be "OPTIONS" not "options"
       if (request.method === 'options') {
@@ -56,17 +54,20 @@ export const ProductRoutes = T.gen(function* (_) {
         return ServerResponse.empty({
           status: 204,
           headers: {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PATCH, DELETE',
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             'Access-Control-Allow-Origin': 'http://localhost:4200'
           }
         })
       }
 
-      // eslint-disable-next-line @typescript-eslint/naming-convention
       return yield* _(
         app,
         T.flatMap(
+          // eslint-disable-next-line @typescript-eslint/naming-convention
           ServerResponse.setHeaders({ 'Access-Control-Allow-Origin': 'http://localhost:4200' })
         )
       )
@@ -83,6 +84,6 @@ export const ProductRoutes = T.gen(function* (_) {
     RouterBuilder.handle('removeOneProduct', removeOneProductHandler),
     // Check if all routes are implemented
     RouterBuilder.build,
-    cors
+    corsMiddleware
   )
 })
