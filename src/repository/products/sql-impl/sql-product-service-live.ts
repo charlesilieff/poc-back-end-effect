@@ -52,8 +52,9 @@ export const makeProductSqlRepoLive = L.effect(
           yield* _(ProductNotFoundError.of('Product id is undefined'))
         } else {
           yield* _(
-            mysql`UPDATE products SET code = ${product.code}, name = ${product.name}, description = ${product.description}, category = ${product.category}, inventoryStatus = ${product.inventoryStatus}, price = ${product.price}, quantity = ${product.quantity}, image = ${product.image ?? null
-              }, rating = ${product.rating ?? null} WHERE id = ${product.id}
+            mysql`UPDATE products SET code = ${product.code}, name = ${product.name}, description = ${product.description}, category = ${product.category}, inventoryStatus = ${product.inventoryStatus}, price = ${product.price}, quantity = ${product.quantity}, image = ${
+              product.image ?? null
+            }, rating = ${product.rating ?? null} WHERE id = ${product.id}
           ${mysql.updateValues([{ ...product, id: product.id }], 'data')}`
           )
         }
