@@ -1,13 +1,11 @@
-import * as Middleware from '@effect/platform/Http/Middleware'
-import * as ServerResponse from '@effect/platform/Http/ServerResponse'
-import * as Sc from '@effect/schema/Schema'
-import { Effect as T, pipe } from 'effect'
-import { RouterBuilder, ServerError } from 'effect-http'
+import * as Sc from '@effect/schema/Schema';
+import { Effect as T, pipe } from 'effect';
+import { Middlewares, RouterBuilder, ServerError } from 'effect-http';
 
-import type { Product } from '../../../../models/Product.js'
-import { ProductId } from '../../../../models/Product.js'
-import { ProductService } from '../../../../services/products/products-service.js'
-import { ProductsRoutes } from '../products.js'
+import type { Product } from '../../../../models/Product.js';
+import { ProductId } from '../../../../models/Product.js';
+import { ProductService } from '../../../../services/products/products-service.js';
+import { ProductsRoutes } from '../products.js';
 
 export const ProductRoutes = T.gen(function* (_) {
   const productService = yield* _(ProductService)
@@ -29,6 +27,8 @@ export const ProductRoutes = T.gen(function* (_) {
       )
     )
 
+
+
   const patchOneProductHandler = ({ body }: { body: Product }) =>
     productService.updateOneProduct(body)
 
@@ -43,15 +43,7 @@ export const ProductRoutes = T.gen(function* (_) {
       )
     )
 
-  const corsMiddleware = Middleware.make(app =>
-    T.flatMap(
-      app,
-      ServerResponse.setHeaders({
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        'access-control-allow-origin': 'http://localhost:4200'
-      })
-    )
-  )
+
 
   return pipe(
     ProductsRoutes,
@@ -77,6 +69,6 @@ export const ProductRoutes = T.gen(function* (_) {
     ),
     // Check if all routes are implemented
     RouterBuilder.build,
-    corsMiddleware
+    Middlewares.cors(),
   )
 })

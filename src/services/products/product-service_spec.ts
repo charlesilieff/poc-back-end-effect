@@ -1,3 +1,5 @@
+import type { PlatformError } from '@effect/platform-node/Error'
+import type { ParseError } from '@effect/schema/ParseResult'
 import * as Sc from '@effect/schema/Schema'
 import type { ConfigError, Layer as L } from 'effect'
 import { Effect as T } from 'effect'
@@ -9,7 +11,7 @@ import { ProductService } from './products-service.js'
 // TODO: after all tests delete all data
 
 export const ProductServiceTest = (
-  layerProduct: L.Layer<never, ConfigError.ConfigError, ProductService>
+  layerProduct: L.Layer<never, ConfigError.ConfigError | PlatformError | ParseError, ProductService>
 ) => {
   describe('Product Service', () => {
     // TODO : generate a random product
