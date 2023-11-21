@@ -1,9 +1,12 @@
+import cors from 'cors'
 import express from 'express'
+
+
 
 const app = express()
 const port = 3000
-
-app.get('/', (req, res) => {
+app.use(cors())
+app.get('/health-get', (req, res) => {
   res.send('Hello World!')
 })
 
