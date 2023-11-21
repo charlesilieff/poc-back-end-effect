@@ -1,4 +1,9 @@
 {
+  "ignorePatterns": [
+    ".eslintrc.json",
+    "src",
+    "vite.config.ts"
+  ],
   "parser": "@typescript-eslint/parser",
   "plugins": [
     "@typescript-eslint",
