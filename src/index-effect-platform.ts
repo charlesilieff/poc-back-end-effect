@@ -1,10 +1,10 @@
 import { createServer } from 'node:http'
 
-import * as Http from '@effect/platform-node/HttpServer'
-import { runMain } from '@effect/platform-node/Runtime'
 import * as Headers from '@effect/platform/Http/Headers'
 import * as Middleware from '@effect/platform/Http/Middleware'
 import { ServerRequest } from '@effect/platform/Http/ServerRequest'
+import * as Http from '@effect/platform-node/HttpServer'
+import { runMain } from '@effect/platform-node/Runtime'
 import { Effect, Layer } from 'effect'
 
 const cors = Middleware.make(app =>

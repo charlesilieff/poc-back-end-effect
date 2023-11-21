@@ -5,7 +5,7 @@
   "scripts": {
     "test": "vitest",
     "watch": "bun --watch src/index.ts",
-    "lint": "tsc && eslint . --ext .ts,.tsx",
+    "lint": "tsc && eslint src --ext .ts",
     "fmt": "dprint fmt",
     "start": "bun src/index.ts",
     "prepare": "husky install"

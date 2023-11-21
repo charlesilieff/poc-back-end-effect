@@ -1,7 +1,14 @@
 import * as FileSystem from '@effect/platform-node/FileSystem'
 import * as Sc from '@effect/schema/Schema'
-import { Effect as T, HashMap as HM, Layer as L, Option as O, Order, pipe,
-  ReadonlyArray as A } from 'effect'
+import {
+  Effect as T,
+  HashMap as HM,
+  Layer as L,
+  Option as O,
+  Order,
+  pipe,
+  ReadonlyArray as A
+} from 'effect'
 import type { Brand } from 'effect/Brand'
 
 import { Product, ProductId } from '../../../models/Product.js'
