@@ -1,7 +1,7 @@
 
 import * as FileSystem from "@effect/platform-node/FileSystem";
 import * as Sc from '@effect/schema/Schema'
-import { Effect as T, HashMap as HM, Layer as L, Option as O, pipe, ReadonlyArray as A } from 'effect'
+import { Effect as T, HashMap as HM, Layer as L, Option as O, Order, pipe, ReadonlyArray as A } from 'effect'
 import type { Brand } from 'effect/Brand';
 
 import { Product, ProductId } from '../../../models/Product.js';
@@ -48,8 +48,8 @@ export const makeProductFileSystemRepoLive = L.effect(
 
         const products = yield* _(readProductsHashMap)
 
-        // FIXME: this is not safe
-        const newId = pipe(products, HM.values, A.fromIterable, A.last, O.match({ onNone: () => 0, onSome: ({ id }) => id !== undefined ? id + 1 : 0 }), Sc.parseSync(ProductId))
+        // FIXME: this is not optimal
+        const newId = pipe(products, HM.values, A.fromIterable, A.map(p => O.fromNullable(p.id)), A.compact, A.sort(Order.number), A.last, O.match({ onNone: () => 0, onSome: id => id + 1 }), Sc.parseSync(ProductId))
         const productToSave: Product = { ...product, id: newId }
         const newProducts = yield* _(pipe(readProductsHashMap, T.map(HM.set(newId, productToSave))))
         yield* _(writeProductsHashMap(newProducts))
