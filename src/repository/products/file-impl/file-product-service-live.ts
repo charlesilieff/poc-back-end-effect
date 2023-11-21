@@ -50,8 +50,8 @@ export const makeProductFileSystemRepoLive = L.effect(
 
         // FIXME: this is not optimal
         const newId = pipe(products, HM.values, A.fromIterable, A.map(p => O.fromNullable(p.id)), A.compact, A.sort(Order.number), A.last, O.match({ onNone: () => 0, onSome: id => id + 1 }), Sc.parseSync(ProductId))
-        const productToSave: Product = { ...product, id: newId }
-        const newProducts = yield* _(pipe(readProductsHashMap, T.map(HM.set(newId, productToSave))))
+
+        const newProducts = yield* _(pipe(readProductsHashMap, T.map(HM.set(newId, { ...product, id: newId } as Product))))
         yield* _(writeProductsHashMap(newProducts))
 
         return newId
