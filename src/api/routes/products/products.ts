@@ -4,18 +4,6 @@ import { Api } from 'effect-http'
 
 import { Product, ProductId } from '../../../models/Product.js'
 
-// const optionProduct = pipe(
-//   Api.options('optionProducts', '/products', {
-//     response: {
-//       status: 200,
-//       headers: Sc.struct({
-//         'Access-Control-Allow-Methods': Sc.string,
-//         'Access-Control-Allow-Headers': Sc.string
-//       })
-//     }
-//   }, { description: 'CORS handler' })
-// )
-
 const postProducts = pipe(
   Api.post('postProducts', '/products', {
     response: Sc.struct({ data: ProductId }),

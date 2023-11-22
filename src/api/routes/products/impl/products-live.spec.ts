@@ -8,7 +8,7 @@ import { ProductId } from '../../../../models/Product.js'
 import { getOneProduct } from '../products.js'
 
 describe('Product Api', () => {
-  it.skip(
+  it(
     'should get a product',
     async () =>
       await T.gen(function* (_) {

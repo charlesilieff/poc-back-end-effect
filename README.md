@@ -6,10 +6,10 @@ To install dependencies:
 pnpm install
 ```
 
-To build:
+To watch:
 
 ```bash
-pnpm build
+pnpm watch
 ```
 
 To start:
