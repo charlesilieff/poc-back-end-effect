@@ -5,8 +5,8 @@ import { fromDisk, makeLayer } from '@sqlfx/mysql/Migrator'
 import { ConfigSecret } from 'effect'
 import * as Config from 'effect/Config'
 
+// FIXME: use env variables
 const USER = 'user'
-
 const PASSWORD = 'password'
 
 export const MysqlLive = Mysql.makeLayer({
@@ -21,6 +21,4 @@ export const MigrationLayer = makeLayer({
   loader: fromDisk(
     `${fileURLToPath(new URL('.', import.meta.url))}/migrations`
   )
-  // // Where to put the `_schema.sql` file
-  // schemaDirectory: 'src/migrations'
 })

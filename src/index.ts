@@ -14,6 +14,9 @@ pipe(
   ProductRoutes,
   T.flatMap(Http.NodeServer.listen({ port: PORT })),
   T.provide(makeProductServiceLive),
+  // to use file system repository, uncomment this line and comment the next ones
+  // T.provide(makeProductFileSystemRepoLive),
+
   T.provide(makeProductSqlRepoLive),
   T.provide(MigrationLayer),
   T.provide(MysqlLive),
