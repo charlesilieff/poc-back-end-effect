@@ -2,7 +2,8 @@ import * as Sc from '@effect/schema/Schema'
 import { pipe } from 'effect'
 import { Api } from 'effect-http'
 
-import { Product, ProductId } from '../../../models/Product.js'
+import { Product } from '../../../models/Product.js'
+import { ProductId } from '../../../models/ProductId.js'
 
 const postProducts = pipe(
   Api.post('postProducts', '/products', {

@@ -11,7 +11,8 @@ import {
 } from 'effect'
 import type { Brand } from 'effect/Brand'
 
-import { Product, ProductId } from '../../../models/Product.js'
+import { Product } from '../../../models/Product.js'
+import { ProductId } from '../../../models/ProductId.js'
 import { ProductNotFoundError } from '../../../services/products/errors/ProductNotFoundError.js'
 import { ProductRepositoryService } from '../products.js'
 

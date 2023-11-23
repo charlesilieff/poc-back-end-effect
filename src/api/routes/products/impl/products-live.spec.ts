@@ -4,7 +4,7 @@ import { Api, MockClient } from 'effect-http'
 import { describe, expect, it } from 'vitest'
 
 import type { Product } from '../../../../models/Product.js'
-import { ProductId } from '../../../../models/Product.js'
+import { ProductId } from '../../../../models/ProductId.js'
 import { getOneProduct } from '../products.js'
 
 describe('Product Api', () => {

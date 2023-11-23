@@ -5,7 +5,8 @@ import type { ConfigError, Layer as L } from 'effect'
 import { Effect as T } from 'effect'
 import { describe, expect, it } from 'vitest'
 
-import { Product, ProductId } from '../../models/Product.js'
+import { Product } from '../../models/Product.js'
+import { ProductId } from '../../models/ProductId.js'
 import { ProductService } from './products-service.js'
 
 // TODO: after all tests delete all data

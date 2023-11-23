@@ -3,7 +3,8 @@ import type { ParseError } from '@effect/schema/ParseResult'
 import type { ResultLengthMismatch, SchemaError, SqlError } from '@sqlfx/mysql/Error'
 import { Context, type Effect as T } from 'effect'
 
-import type { Product, ProductId } from '../../models/Product.js'
+import type { Product } from '../../models/Product.js'
+import type { ProductId } from '../../models/ProductId.js'
 import type { ProductNotFoundError } from '../../services/products/errors/ProductNotFoundError.js'
 
 export interface ProductRepositoryService {

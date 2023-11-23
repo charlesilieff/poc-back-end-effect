@@ -1,6 +1,7 @@
 import { Context, type Effect as T } from 'effect'
 
-import type { Product, ProductId } from '../../models/Product.js'
+import type { Product } from '../../models/Product.js'
+import type { ProductId } from '../../models/ProductId.js'
 import type { ProductNotFoundError } from './errors/ProductNotFoundError.js'
 
 export interface ProductService {

@@ -3,7 +3,8 @@ import { formatErrors } from '@effect/schema/TreeFormatter'
 import * as Mysql from '@sqlfx/mysql'
 import { Effect as T, Layer as L, pipe, ReadonlyArray as A } from 'effect'
 
-import { Product, ProductId } from '../../../models/Product.js'
+import { Product } from '../../../models/Product.js'
+import { ProductId } from '../../../models/ProductId.js'
 import { ProductNotFoundError } from '../../../services/products/errors/ProductNotFoundError.js'
 import { ProductRepositoryService } from '../products.js'
 

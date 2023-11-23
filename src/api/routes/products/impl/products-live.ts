@@ -6,7 +6,7 @@ import { Effect as T, pipe } from 'effect'
 import { RouterBuilder, ServerError } from 'effect-http'
 
 import type { Product } from '../../../../models/Product.js'
-import { ProductId } from '../../../../models/Product.js'
+import { ProductId } from '../../../../models/ProductId.js'
 import { ProductService } from '../../../../services/products/products-service.js'
 import { ProductsRoutes } from '../products.js'
 
