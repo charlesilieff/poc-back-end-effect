@@ -1,5 +1,5 @@
 {
-  "name": "alten-back",
+  "name": "poc-back",
   "module": "src/index.ts",
   "type": "module",
   "scripts": {
